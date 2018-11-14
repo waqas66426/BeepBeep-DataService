@@ -1,0 +1,11 @@
+*.un~
+__pycache__
+bin
+include
+lib
+*.egg-info
+.Python
+.cache
+.coverage
+.tox
+docs/build
