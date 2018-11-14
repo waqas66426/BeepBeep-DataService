@@ -9,3 +9,4 @@ lib
 .coverage
 .tox
 docs/build
+key.sh
