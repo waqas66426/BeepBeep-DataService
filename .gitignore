@@ -10,3 +10,4 @@ lib
 .tox
 docs/build
 key.sh
+src

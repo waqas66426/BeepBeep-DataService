@@ -15,8 +15,12 @@ _HERE = os.path.dirname(__file__)
 os.environ['TESTDIR'] = os.path.join(_HERE, 'tests')
 _SETTINGS = os.path.join(_HERE, 'settings.ini')
 
+app = None
+
 
 def create_app(settings=None):
+    global app
+
     if settings is None:
         settings = _SETTINGS
 
