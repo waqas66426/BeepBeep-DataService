@@ -1,2 +1,5 @@
 [run]
-omit = dataservice/tests/*, .tox/*
+source = beepbeep/dataservice/*
+
+omit =  *__init__*
+        beepbeep/dataservice/tests/*
