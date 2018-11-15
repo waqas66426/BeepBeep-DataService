@@ -1,4 +1,5 @@
 [run]
-source = beepbeep/dataservice/tests/*
+source = beepbeep/dataservice/*
 
-omit = *__init__*
+omit =  *__init__*
+        beepbeep/dataservice/tests/*
