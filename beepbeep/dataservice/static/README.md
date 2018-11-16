@@ -4,7 +4,7 @@
 the user credentials should be detached from the table user in the micro service db
 
 /user
-  PUT to create the user (return the id?)
+  POST to create the user (return the id)
 
   /user/<id>
     GET the user by id
@@ -24,11 +24,11 @@ the user credentials should be detached from the table user in the micro service
 
 
 /objectvie 
-  PUT to create the objective (return the id?)
+  POST to create the objective (return the id)
 
   /objective/<runner_id>
     GET get the objectvie by user id
-    POST to set the new objective
+    PUT to set the new objective
 
 
 /challenge
