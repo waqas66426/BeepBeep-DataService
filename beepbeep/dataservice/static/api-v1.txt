@@ -1,14 +1,10 @@
-
-# Unofficial API
-
-The user credentials should be detached from the table user in the micro service db
-
 /users
   - GET return the list of users
-  - POST create a new user (return the id)
+  - POST create user (return User Object)
 
   /<id>
     - GET return the user by id
+    - PUT update a user (return User Object)
     - DELETE delete the user by id (it will delete on cascade the other table fields related to that user)
 
     /runs
@@ -23,15 +19,17 @@ The user credentials should be detached from the table user in the micro service
 
     /objectives 
       - GET return all the objectives of the given user
-      - POST create/update an objective (return the id)
+      - POST create objective (return Objective Object)
 
       /<objectiveId>
         - GET return the given objective of the specified user
+        - PUT update a objective (return Objective Object)
         - DELETE delete the given objective of the specified user
 
     /challenges
-      - POST to create/update a challenge (return the id)  
+      - POST create Challenge (return Challenge Object)
 
       /<challengeId>
       - GET return the given challenge of the specified user
+      - PUT update a Challenge (return Challenge Object)
       - DELETE delete the challenge before challenging another one
