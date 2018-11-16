@@ -1,6 +1,6 @@
 /users
   - GET return the list of users
-  - POST create user (return User Object)
+  - POST create a user (return User Object)
 
   /<id>
     - GET return the user by id
@@ -8,16 +8,18 @@
     - DELETE delete the user by id (it will delete on cascade the other table fields related to that user)
 
     /runs
-      - GET return the list of all runs of the given user (?limit=<limit> to limit the number of results)
+      - GET return the list of all Runs of the given user (?limit=<limit> to limit the number of results)
+      - POST create a Run (return Run Object)
 
       /<runId>
-        - GET return the given run of the specified user
-        - DELETE delete the given run of the specified user
+        - GET return the given Run of the specified user
+        - PUT update a Run (return Run Object)
+        - DELETE delete the given Run of the specified user
 
       /getMaxId
         - GET like doing a select max(id) query on the db
 
-    /objectives 
+    /objectives
       - GET return all the objectives of the given user
       - POST create objective (return Objective Object)
 
@@ -27,6 +29,7 @@
         - DELETE delete the given objective of the specified user
 
     /challenges
+      - GET return the list of all Challenges of the given user (?limit=<limit> to limit the number of results)
       - POST create Challenge (return Challenge Object)
 
       /<challengeId>
