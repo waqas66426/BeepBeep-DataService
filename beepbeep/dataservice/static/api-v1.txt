@@ -3,7 +3,7 @@
 
 The user credentials should be detached from the table user in the micro service db
 
-/user
+/users
   - GET return the list of users
   - POST create a new user (return the id)
 
@@ -30,7 +30,7 @@ The user credentials should be detached from the table user in the micro service
         - DELETE delete the given objective of the specified user
 
     /challenges
-      - POST to create/update a challenge
+      - POST to create/update a challenge (return the id)  
 
       /<challengeId>
       - GET return the given challenge of the specified user
