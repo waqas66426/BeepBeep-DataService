@@ -1,52 +1,453 @@
-swagger: "2.0"
+openapi: "3.0.0"
 info:
-  title: beepbeep Data Service
-  description: returns info about beepbeep
+  title: "Beepbeep Data Service"
+  description: "Beepbeep data microservice api by Barletta team"
   license:
-    name: APLv2
-    url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.1.0
-basePath: /api
-paths:
-    /runs/{runner_id}:
-      get:
-       operationId: getRuns
-       description: Get Runs
-       produces:
-       - application/json
-       parameters:
-          - name: runner_id
-            in: path
-            description: ID of Runner
-            required: true
-            type: integer
-       responses:
-          '200':
-            description: List of runs
-    /add_runs:
-      post:
-        operationId: addRuns
-        description: Adds runs
-        produces:
-        - application/json
-        responses:
-          '200':
-            description: List of runs ids
-            schema:
-                type: array
-                items:
-                    type: integer
-    /users:
-      get:
-        operationId: getUsers
-        description: Returns a list of users
-        produces:
-        - application/json
-        responses:
-          '200':
-            description: List of Ids
-            schema:
-                type: array
-                items:
-                    type: integer
+    name: "APLv2"
+    url: "https://www.apache.org/licenses/LICENSE-2.0.html"
+  version: "0.1.0"
 
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        age:
+          type: integer
+        weight:
+          type: integer
+        max_hr:
+          type: integer
+        rest_hr:
+          type: integer
+        vo2max:
+          type: integer
+        is_active:
+          type: boolean
+        is_admin:
+          type: boolean
+        is_anonymous:
+          type: boolean
+
+    Run:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        strava_id:
+          type: integer
+        distance:
+          type: number
+          format: float
+        start_date:
+          type: string
+          format: date
+        elapsed_time:
+          type: number
+          format: float
+        average_speed:
+          type: number
+          format: float
+        average_heatrate:
+          type: number
+          format: float
+        total_elevation_gain:
+          type: number
+          format: float
+        runner_id:
+          type: integer
+
+    Objective:
+      type: object
+      properties:
+        distance:
+          type: number
+          format: float
+        user_id:
+          type: integer
+
+    Challenge:
+      type: object
+      properties:
+        id:
+          type: integer
+        runner_id:
+          type: integer
+        run_id:
+          type: integer
+        latest_run_id:
+          type: integer
+
+paths:
+  /users:
+    get:
+      operationId: getListUsers
+      summary: Returns a list of Users
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+        '401':
+            description: Unauthorized
+        '404':
+            description: Not Found
+        '500':
+            description: Internal Server Error
+    post:
+      operationId: createUser
+      summary: Create user (return User Object)
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /users/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+
+    get:
+      operationId: getUserbyId
+      summary: Return the user given its identifier
+      responses:
+        200:
+          description: The requested user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        401:
+          description: User not authorized
+    delete:
+      operationId: deleteUserById
+      summary: Delete the user given its identifier
+      responses:
+        200:
+          description: The requested user
+        401:
+          description: User not authorized
+    put:
+      operationId: updateUser
+      summary: Updates the given user
+      responses:
+        200:
+          description: The user has been updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: User not authorized
+
+  /users/{id}/runs:
+    parameters:
+      - in: path
+        name: id
+        description: The user id
+        required: true
+        schema:
+          type: integer
+      - in: query
+        name: limit
+        description: Limit the number of results
+        required: false
+        schema:
+          type: integer
+    get:
+      operationId: getRunsByUserId
+      summary: Return all runs of the user
+      responses:
+        200:
+          description: The requested user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        401:
+          description: User not authorized
+
+  /users/{id}/runs/{runId}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+      - in: path
+        name: runId
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+
+    get:
+     operationId: getRuns
+     description: Get Runs
+     responses:
+        200:
+          description: List of runs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Run'
+    delete:
+      operationId: deleteRunById
+      summary: Delete the run of the given user by id
+      responses:
+        '204':
+          description: objective successfully deleted
+        '401':
+          description: Unauthorized
+
+  /users/{id}/challenges:
+    parameters:
+          - name: id
+            in: path
+            description: ID of pet to fetch
+            required: true
+            schema:
+              type: integer
+
+    post:
+      operationId: createChallenge
+      summary: Create a challenge
+      responses:
+        '200':
+          description: Null Response
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: User ID
+
+        '400':
+          description: Bad Request
+
+        '401':
+            description: Unauthorized
+
+        '404':
+            description: Not Found
+
+        '500':
+            description: Internal Server Error
+
+  /users/{id}/objective:
+    get:
+      operationId: getObj
+      summary: return all objectives by a specified user
+      parameters:
+        - name: id
+          in: path
+          description: user ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of objectives
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Objective"
+    post:
+      operationId: setObj
+      summary: create an objective
+      parameters:
+        - name: id
+          in: path
+          description: user ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: objective successfully created
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: Objective ID
+
+  /users/{id}/objectives/{objId}:
+    parameters:
+        - name: id
+          in: path
+          description: ID of pet to fetch
+          required: true
+          schema:
+            type: integer
+
+        - name: objId
+          in: path
+          description: ID of pet to fetch
+          required: true
+          schema:
+            type: integer
+
+    get:
+      operationId: getObjectiveById
+      summary: get objective by user id and objective id
+      responses:
+        '200':
+          description: json containing the user objective
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Objective'
+    put:
+      operationId: updateObj
+      summary: update an objective
+      responses:
+        '200':
+          description: objective successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Objective'
+    delete:
+      operationId: deleteObjectvieById
+      summary: delete the objective by user id and objective id
+      responses:
+        '204':
+          description: objective successfully deleted
+        '401':
+          description: Unauthorized
+
+  /users/{id}/runs/getMaxId:
+    parameters:
+      - name: id
+        in: path
+        description: ID of pet to fetch
+        required: true
+        schema:
+          type: integer
+    get:
+      operationId: getMaxId
+      summary: doing a select max(id) query on the db
+      responses:
+        '200':
+          description: max run id in the database
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Objective'
+
+  /users/{id}/challenges/{challengeId}:
+    delete:
+      operationId: DeleteChallengeById
+      summary: Deletes the challenge of the given user by id
+      parameters:
+        - name: id
+          in: path
+          description: user ID
+          required: true
+          schema:
+            type: integer
+        - name: challengeId
+          in: path
+          description: user ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: challenge successfully deleted
+        '401':
+          description: User not authorized
+    get:
+      operationId: GetChallengeById
+      summary: Returns the challenge of the given user by id
+      parameters:
+        - name: id
+          in: path
+          description: user ID
+          required: true
+          schema:
+            type: integer
+        - name: challengeId
+          in: path
+          description: user ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The challenge
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Challenge'
+        '401':
+          description: User not authorized
+    put:
+      operationId: updateChallengeById
+      summary: Update a challenge belonging to the ID passed
+      parameters:
+        - name: id
+          in: path
+          description: user ID
+          required: true
+          schema:
+            type: integer
+        - name: challengeId
+          in: path
+          description: user ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Null Response
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: User ID
+
+        '400':
+          description: Bad Request
+
+        '401':
+            description: Unauthorized
+
+        '404':
+            description: Not Found
+
+        '500':
+            description: Internal Server Error
