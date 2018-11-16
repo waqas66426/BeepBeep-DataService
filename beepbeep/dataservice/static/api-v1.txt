@@ -1,39 +1,37 @@
 
 # Unofficial API
 
-the user credentials should be detached from the table user in the micro service db
+The user credentials should be detached from the table user in the micro service db
 
 /user
-  POST to create the user (return the id)
+  - GET return the list of users
+  - POST create a new user (return the id)
 
-  /user/<id>
-    GET the user by id
-    DELETE to delete the user by id (it will delete on cascade the other table fields related to that user)
+  /<id>
+    - GET return the user by id
+    - DELETE delete the user by id (it will delete on cascade the other table fields related to that user)
 
-  /user/byemail/<email@email.com>
-    GET the user by email
+    /runs
+      - GET return the list of all runs of the given user (?limit=<limit> to limit the number of results)
 
+      /<runId>
+        - GET return the given run of the specified user
+        - DELETE delete the given run of the specified user
 
-/runs
+      /getMaxId
+        - GET like doing a select max(id) query on the db
 
-  /runs/maxrunid
-    GET like doing a select max(id) query on the db
+    /objectives 
+      - GET return all the objectives of the given user
+      - POST create/update an objective (return the id)
 
-  /runs/<runner_id>?number=<number_of_runs>
-   GET to ge the run by user id (already implemented)
+      /<objectiveId>
+        - GET return the given objective of the specified user
+        - DELETE delete the given objective of the specified user
 
+    /challenges
+      - POST to create/update a challenge
 
-/objectvie 
-  POST to create the objective (return the id)
-
-  /objective/<runner_id>
-    GET get the objectvie by user id
-    PUT to set the new objective
-
-
-/challenge
-  PUT to create a challenge
-
-  /challenge/<runner_id>
-    GET to get the challenge by user id
-    DELETE to delete the challenge before challenging anathor one
+      /<challengeId>
+      - GET return the given challenge of the specified user
+      - DELETE delete the challenge before challenging another one
