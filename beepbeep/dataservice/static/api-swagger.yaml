@@ -1,0 +1,439 @@
+---
+info:
+  title: Beepbeep Data Service
+  description: Beepbeep data microservice api by Barletta team
+  license:
+    name: APLv2
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.1.0
+paths:
+  "/users":
+    get:
+      operationId: getUsers
+      summary: Returns a list of Users
+      responses:
+        '200':
+          description: Ok
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/User"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      parameters: []
+    post:
+      operationId: createUser
+      summary: Create user
+      responses:
+        '201':
+          description: Created
+          schema:
+            "$ref": "#/definitions/User"
+        '406':
+          description: Syntax Error
+        '409':
+          description: User already existing
+      parameters: []
+  "/users/{id}":
+    parameters:
+    - in: path
+      name: id
+      description: The user id
+      required: true
+      type: integer
+    get:
+      operationId: getUserById
+      summary: Return the information of given user identifier
+      responses:
+        '200':
+          description: The requested user
+          schema:
+            "$ref": "#/definitions/User"
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: User not existing
+      parameters: []
+    put:
+      operationId: updateUserById
+      summary: Updates the information of given user identifier
+      responses:
+        '200':
+          description: The user has been updated
+          schema:
+            "$ref": "#/definitions/User"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '406':
+          description: Syntax Error
+      parameters: []
+    delete:
+      operationId: deleteUserById
+      summary: Delete the user given its identifier
+      responses:
+        '200':
+          description: The user has been deleted
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: User not existing
+      parameters: []
+  "/users/{id}/runs":
+    parameters:
+    - in: path
+      name: id
+      description: The user id
+      required: true
+      type: integer
+    - in: query
+      name: limit
+      description: Limit the number of results
+      required: false
+      type: integer
+    get:
+      operationId: getRuns
+      summary: Return all runs of the user
+      responses:
+        '200':
+          description: The requested run of user
+          schema:
+            "$ref": "#/definitions/Run"
+        '401':
+          description: User not authorized
+      parameters: []
+    post:
+      operationId: addRun
+      summary: Create a new run (return Run object)
+      responses:
+        '200':
+          description: Ok
+          schema:
+            "$ref": "#/definitions/Run"
+      parameters: []
+  "/users/{id}/runs/{runId}":
+    parameters:
+    - in: path
+      name: id
+      required: true
+      type: integer
+    - in: path
+      name: runId
+      required: true
+      type: integer
+    get:
+      operationId: getRun
+      description: Get Run object with information
+      responses:
+        '200':
+          description: The run
+          schema:
+            "$ref": "#/definitions/Run"
+      parameters: []
+    put:
+      operationId: updateRunById
+      summary: Updates the given Run
+      responses:
+        '200':
+          description: The Run has been updated
+          schema:
+            "$ref": "#/definitions/Run"
+        '400':
+          description: User not authorized
+      parameters: []
+    delete:
+      operationId: deleteRunById
+      summary: Delete the run of the given user by id
+      responses:
+        '204':
+          description: objective successfully deleted
+        '401':
+          description: Unauthorized
+      parameters: []
+  "/users/{id}/runs/getMaxId":
+    parameters:
+    - in: path
+      name: id
+      description: ID of pet to fetch
+      required: true
+      type: integer
+    get:
+      operationId: getMaxId
+      summary: doing a select max(id) query on the db
+      responses:
+        '200':
+          description: max run id in the database
+          schema:
+            type: object
+            items:
+              "$ref": "#/definitions/Objective"
+      parameters: []
+  "/users/{id}/challenges":
+    parameters:
+    - in: path
+      name: id
+      description: ID of pet to fetch
+      required: true
+      type: integer
+    get:
+      operationId: getChallenges
+      summary: Return all challenges of the user
+      responses:
+        '200':
+          description: The requested challenges of user
+          schema:
+            "$ref": "#/definitions/Challenge"
+        '401':
+          description: User not authorized
+      parameters: []
+    post:
+      operationId: createChallenge
+      summary: Create a new challenge for user
+      responses:
+        '200':
+          description: Ok
+          schema:
+            type: integer
+            description: User ID
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      parameters: []
+  "/users/{id}/challenges/{challengeId}":
+    parameters:
+    - in: path
+      name: id
+      description: user ID
+      required: true
+      type: integer
+    - in: path
+      name: challengeId
+      description: challenge ID
+      required: true
+      type: integer
+    get:
+      operationId: getChallengeById
+      summary: Returns the challenge of the given user by id
+      responses:
+        '200':
+          description: The challenge
+          schema:
+            "$ref": "#/definitions/Challenge"
+        '401':
+          description: User not authorized
+      parameters: []
+    put:
+      operationId: updateChallengeById
+      summary: Update a challenge belonging to the ID passed
+      responses:
+        '200':
+          description: Null Response
+          schema:
+            type: integer
+            description: User ID
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      parameters: []
+    delete:
+      operationId: DeleteChallengeById
+      summary: Deletes the challenge of the given user by id
+      responses:
+        '204':
+          description: challenge successfully deleted
+        '401':
+          description: User not authorized
+      parameters: []
+  "/users/{id}/objectives":
+    parameters:
+    - in: path
+      name: id
+      description: user ID
+      required: true
+      type: integer
+    get:
+      operationId: getObj
+      summary: return all objectives by a specified user
+      responses:
+        '200':
+          description: List of objectives
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/Objective"
+      parameters: []
+    post:
+      operationId: setObj
+      summary: create a new objective
+      responses:
+        '201':
+          description: objective successfully created
+          schema:
+            type: integer
+            description: Objective ID
+      parameters: []
+  "/users/{id}/objectives/{objectiveId}":
+    parameters:
+    - name: id
+      in: path
+      description: ID of pet to fetch
+      required: true
+      type: integer
+    - in: path
+      name: objectiveId
+      description: ID of pet to fetch
+      required: true
+      type: integer
+    get:
+      operationId: getObjectiveById
+      summary: get objective by user id and objective id
+      responses:
+        '200':
+          description: json containing the user objective
+          schema:
+            type: object
+            items:
+              "$ref": "#/definitions/Objective"
+      parameters: []
+    put:
+      operationId: updateObjective
+      summary: update an objective
+      responses:
+        '200':
+          description: objective successfully updated
+          schema:
+            type: object
+            items:
+              "$ref": "#/definitions/Objective"
+      parameters: []
+    delete:
+      operationId: deleteObjectvieById
+      summary: delete the objective by user id and objective id
+      responses:
+        '204':
+          description: objective successfully deleted
+        '401':
+          description: Unauthorized
+      parameters: []
+swagger: '2.0'
+definitions:
+  UserNoId:
+    type: object
+    properties:
+      email:
+        type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
+      age:
+        type: integer
+      weight:
+        type: integer
+      max_hr:
+        type: integer
+      rest_hr:
+        type: integer
+      vo2max:
+        type: integer
+      is_active:
+        type: boolean
+      is_admin:
+        type: boolean
+      is_anonymous:
+        type: boolean
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+      email:
+        type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
+      age:
+        type: integer
+      weight:
+        type: integer
+      max_hr:
+        type: integer
+      rest_hr:
+        type: integer
+      vo2max:
+        type: integer
+      is_active:
+        type: boolean
+      is_admin:
+        type: boolean
+      is_anonymous:
+        type: boolean
+  Run:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      strava_id:
+        type: integer
+      distance:
+        type: number
+        format: float
+      start_date:
+        type: string
+        format: date
+      elapsed_time:
+        type: number
+        format: float
+      average_speed:
+        type: number
+        format: float
+      average_heatrate:
+        type: number
+        format: float
+      total_elevation_gain:
+        type: number
+        format: float
+      runner_id:
+        type: integer
+  Objective:
+    type: object
+    properties:
+      distance:
+        type: number
+        format: float
+      user_id:
+        type: integer
+  Challenge:
+    type: object
+    properties:
+      id:
+        type: integer
+      runner_id:
+        type: integer
+      run_id:
+        type: integer
+      latest_run_id:
+        type: integer
+x-components: {}

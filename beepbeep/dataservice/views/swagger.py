@@ -9,12 +9,12 @@ from json import loads
 
 
 HERE = os.path.dirname(__file__)
-YML = os.path.join(HERE, '..', 'static', 'api.yaml')
+YML = os.path.join(HERE, '..', 'static', 'api-swagger.yaml')
 api = SwaggerBlueprint('API', __name__, swagger_spec=YML)
 
 
-@api.operation('addRuns')
-def add_runs():
+@api.operation('addRun')
+def add_runs(id):
     added = 0
     for user, runs in request.json.items():
         runner_id = int(user)
