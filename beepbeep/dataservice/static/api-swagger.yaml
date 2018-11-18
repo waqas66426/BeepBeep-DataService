@@ -112,12 +112,13 @@ paths:
           description: User not authorized
       parameters: []
     post:
-      operationId: addRun
-      summary: Create a new run (return Run object)
+      operationId: addRuns
+      summary: Add one or more runs (return a json with the added runs)
       responses:
         '200':
           description: Ok
           schema:
+            type: array
             "$ref": "#/definitions/Run"
       parameters: []
   "/users/{id}/runs/{runId}":
