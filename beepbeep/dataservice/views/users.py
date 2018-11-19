@@ -34,6 +34,10 @@ def create_user():
     fill(raw_user, user)
 
     try:
+        exist_email = db.session.query(User).filter(User.email == user.email).count()
+        if(exist_email > 0):
+            return jsonify({"error": "A user with the same email already exists"}), 400
+
         db.session.add(user)
         db.session.commit()
     except Exception as e:
@@ -52,8 +56,13 @@ def update_user_by_id(id):
 
     try:
         user = db.session.query(User).filter(User.id == id).first()
+
+        if(user is None):
+            return jsonify({"error": "User not found"}), 404
+
         fill(raw_user, user)
         db.session.commit()
+
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
