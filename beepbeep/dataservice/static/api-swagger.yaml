@@ -337,31 +337,6 @@ paths:
       parameters: []
 swagger: '2.0'
 definitions:
-  UserNoId:
-    type: object
-    properties:
-      email:
-        type: string
-      firstname:
-        type: string
-      lastname:
-        type: string
-      age:
-        type: integer
-      weight:
-        type: integer
-      max_hr:
-        type: integer
-      rest_hr:
-        type: integer
-      vo2max:
-        type: integer
-      is_active:
-        type: boolean
-      is_admin:
-        type: boolean
-      is_anonymous:
-        type: boolean
   User:
     type: object
     properties:
@@ -372,6 +347,8 @@ definitions:
       firstname:
         type: string
       lastname:
+        type: string
+      strava_token:
         type: string
       age:
         type: integer
@@ -394,7 +371,9 @@ definitions:
     properties:
       id:
         type: integer
-      name:
+      title:
+        type: string
+      description:
         type: string
       strava_id:
         type: integer
