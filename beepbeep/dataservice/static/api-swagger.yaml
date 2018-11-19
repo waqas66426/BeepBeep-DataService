@@ -119,7 +119,8 @@ paths:
           description: Ok
           schema:
             type: array
-            "$ref": "#/definitions/Run"
+            items:
+              "$ref": "#/definitions/Run"
       parameters: []
   "/users/{id}/runs/{runId}":
     parameters:
@@ -164,7 +165,7 @@ paths:
     parameters:
     - in: path
       name: id
-      description: ID of pet to fetch
+      description: id of the runner
       required: true
       type: integer
     get:
@@ -174,10 +175,7 @@ paths:
         '200':
           description: max run id in the database
           schema:
-            type: object
-            items:
-              "$ref": "#/definitions/Objective"
-      parameters: []
+            type: integer
   "/users/{id}/challenges":
     parameters:
     - in: path

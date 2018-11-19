@@ -1,5 +1,5 @@
 from .home import home
-from .swagger import api
+from .runs import runs_api
 from .users import users_api
 
-blueprints = [home, api, users_api]
+blueprints = [home, runs_api, users_api]
