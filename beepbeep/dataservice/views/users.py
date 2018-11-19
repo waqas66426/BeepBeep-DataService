@@ -38,7 +38,7 @@ def create_user():
         db.session.commit()
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": "Unknown error occurred"}), 500
+        return jsonify({"error": str(e)}), 500
 
     return jsonify(user.to_json()), 201
 
@@ -56,11 +56,9 @@ def update_user_by_id(id):
         db.session.commit()
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": "Unknown error occurred"}), 500
+        return jsonify({"error": str(e)}), 500
 
     return jsonify(user.to_json()), 201
-
-
 
 @users_api.operation('getUserById')
 def get_user_by_id(id):
@@ -75,8 +73,7 @@ def get_user_by_id(id):
 
         return jsonify(user.to_json()), 201
     except Exception as e:
-        return jsonify({"error": "Unknown error occurred"}), 500
-
+        return jsonify({"error": str(e)}), 500
 
 
 @users_api.operation('deleteUserById')
@@ -88,4 +85,4 @@ def delete_user_by_id(id):
         db.session.commit()
         return "", 204
     except Exception as e:
-        return jsonify({"error": "Unknown error occurred"}), 500
+        return jsonify({"error": str(e)}), 500
