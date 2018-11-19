@@ -44,15 +44,3 @@ def add_runs(id):
 
     runs = db.session.query(Run).filter(Run.runner_id == id)
     return jsonify([run.to_json() for run in runs])
-
-
-@api.operation('getUsers')
-def get_users():
-    users = db.session.query(User)
-    page = 0
-    page_size = None
-    if page_size:
-        users = users.limit(page_size)
-    if page != 0:
-        users = users.offset(page * page_size)
-    return {'users': [user.to_json(secure=True) for user in users]}
