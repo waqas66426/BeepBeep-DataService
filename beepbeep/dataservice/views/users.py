@@ -14,12 +14,6 @@ def fill(source, target):
 @users_api.operation('getUsers')
 def get_users():
     users = db.session.query(User)
-    page = 0
-    page_size = None
-    if page_size:
-        users = users.limit(page_size)
-    if page != 0:
-        users = users.offset(page * page_size)
     return jsonify([user.to_json(secure=True) for user in users])
 
 
@@ -33,14 +27,14 @@ def create_user():
     user = User()
     fill(raw_user, user)
 
+    exist_email = db.session.query(User).filter(User.email == user.email).count()
+    if(exist_email > 0):
+        return jsonify({"error": "A user with the same email already exists"}), 400
+        
     try:
-        exist_email = db.session.query(User).filter(User.email == user.email).count()
-        if(exist_email > 0):
-            return jsonify({"error": "A user with the same email already exists"}), 400
-
         db.session.add(user)
         db.session.commit()
-    except Exception as e:
+    except Exception as e: # pragma: no cover
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
@@ -63,35 +57,34 @@ def update_user_by_id(id):
         fill(raw_user, user)
         db.session.commit()
 
-    except Exception as e:
+    except Exception as e: # pragma: no cover
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
-    return jsonify(user.to_json()), 201
+    return jsonify(user.to_json()), 200
 
 @users_api.operation('getUserById')
 def get_user_by_id(id):
-    if id is None:
-        return "Invalid user id", 400
-
     try:
         user = db.session.query(User).filter(User.id == id).first()
 
         if(user is None):
             return jsonify({"error": "User not found"}), 404
 
-        return jsonify(user.to_json()), 201
-    except Exception as e:
+        return jsonify(user.to_json()), 200
+    except Exception as e: # pragma: no cover
         return jsonify({"error": str(e)}), 500
 
 
 @users_api.operation('deleteUserById')
 def delete_user_by_id(id):
-    if id is None:
-        return "Invalid user id", 400
     try:
+        user = db.session.query(User).filter(User.id == id).first()
+        if(user is None):
+            return jsonify({"error": "User not found"}), 404
+        
         db.session.query(User).filter(User.id == id).delete()
         db.session.commit()
         return "", 204
-    except Exception as e:
+    except Exception as e: # pragma: no cover
         return jsonify({"error": str(e)}), 500
