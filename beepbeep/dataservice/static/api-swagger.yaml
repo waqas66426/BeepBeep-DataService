@@ -272,7 +272,7 @@ paths:
       required: true
       type: integer
     get:
-      operationId: getObj
+      operationId: getObjectives
       summary: return all objectives by a specified user
       responses:
         '200':
@@ -283,25 +283,24 @@ paths:
               "$ref": "#/definitions/Objective"
       parameters: []
     post:
-      operationId: setObj
+      operationId: setObjective
       summary: create a new objective
       responses:
         '201':
           description: objective successfully created
           schema:
-            type: integer
-            description: Objective ID
+            "$ref": "#/definitions/Objective"
       parameters: []
   "/users/{id}/objectives/{objectiveId}":
     parameters:
     - name: id
       in: path
-      description: ID of pet to fetch
+      description: id of the user
       required: true
       type: integer
     - in: path
       name: objectiveId
-      description: ID of pet to fetch
+      description: if of the objective
       required: true
       type: integer
     get:
@@ -316,7 +315,7 @@ paths:
               "$ref": "#/definitions/Objective"
       parameters: []
     put:
-      operationId: updateObjective
+      operationId: updateObjectiveById
       summary: update an objective
       responses:
         '200':
@@ -327,7 +326,7 @@ paths:
               "$ref": "#/definitions/Objective"
       parameters: []
     delete:
-      operationId: deleteObjectvieById
+      operationId: deleteObjectiveById
       summary: delete the objective by user id and objective id
       responses:
         '204':

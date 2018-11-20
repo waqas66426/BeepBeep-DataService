@@ -44,7 +44,7 @@ def add_challenge(id):
 def get_challenge(id, challengeId):
     challenge = db.session.query(Challenge).filter(Challenge.runner_id == id, Challenge.id == challengeId).first()
     if challenge is None:
-        return jsonify({"error": "run not found"}), 404
+        return jsonify({"error": "challenge not found"}), 404
     else:
         return jsonify(challenge.to_json())
 
@@ -54,7 +54,7 @@ def update_challenge(id, challengeId):
     challenge = db.session.query(Challenge).filter(Challenge.runner_id == id, Challenge.id == challengeId).first()
 
     if challenge is None:
-        return jsonify({"error": "run not found"}), 404
+        return jsonify({"error": "challenge not found"}), 404
 
     json_to_challenge(challenge, request.get_json(), id)
     db.session.commit()
@@ -62,12 +62,13 @@ def update_challenge(id, challengeId):
     challenge = db.session.query(Challenge).filter(Challenge.runner_id == id, Challenge.id == challengeId).first()
     return jsonify(challenge.to_json())
 
+
 @challenges_api.operation('deleteChallengeById')
-def delete_run(id, challengeId):
+def delete_challenge(id, challengeId):
     challenge = db.session.query(Challenge).filter(Challenge.runner_id == id, Challenge.id == challengeId).first()
 
     if challenge is None:
-        return jsonify({"error": "run not found"}), 404
+        return jsonify({"error": "challenge not found"}), 404
     else:
         db.session.delete(challenge)
         db.session.commit()
