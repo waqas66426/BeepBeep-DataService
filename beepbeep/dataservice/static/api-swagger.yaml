@@ -140,6 +140,8 @@ paths:
           description: The run
           schema:
             "$ref": "#/definitions/Run"
+        '404':
+          description: Not Found
       parameters: []
     put:
       operationId: updateRunById
@@ -180,7 +182,7 @@ paths:
     parameters:
     - in: path
       name: id
-      description: ID of pet to fetch
+      description: id of the user
       required: true
       type: integer
     get:
@@ -195,14 +197,13 @@ paths:
           description: User not authorized
       parameters: []
     post:
-      operationId: createChallenge
-      summary: Create a new challenge for user
+      operationId: addChallenge
+      summary: Add one challenge (return a json with the added challenge)
       responses:
         '200':
           description: Ok
           schema:
-            type: integer
-            description: User ID
+            "$ref": "#/definitions/Challenge"
         '400':
           description: Bad Request
         '401':
@@ -234,16 +235,17 @@ paths:
             "$ref": "#/definitions/Challenge"
         '401':
           description: User not authorized
+        '404':
+          description: Not found
       parameters: []
     put:
       operationId: updateChallengeById
       summary: Update a challenge belonging to the ID passed
       responses:
         '200':
-          description: Null Response
+          description: the updated challenge
           schema:
-            type: integer
-            description: User ID
+            "$ref": "#/definitions/Challenge"
         '400':
           description: Bad Request
         '401':
@@ -254,7 +256,7 @@ paths:
           description: Internal Server Error
       parameters: []
     delete:
-      operationId: DeleteChallengeById
+      operationId: deleteChallengeById
       summary: Deletes the challenge of the given user by id
       responses:
         '204':

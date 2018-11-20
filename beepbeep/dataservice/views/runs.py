@@ -3,14 +3,14 @@ from datetime import datetime
 
 from flakon import SwaggerBlueprint
 from flask import request, jsonify
-from beepbeep.dataservice.database import db, User, Run
+from beepbeep.dataservice.database import db, Run
 from sqlalchemy import func
 import json
 from json import loads
 
 HERE = os.path.dirname(__file__)
 YML = os.path.join(HERE, '..', 'static', 'api-swagger.yaml')
-runs_api = SwaggerBlueprint('API', __name__, swagger_spec=YML)
+runs_api = SwaggerBlueprint('runs', __name__, swagger_spec=YML)
 
 
 
@@ -66,6 +66,10 @@ def get_run(id, runId):
 @runs_api.operation('updateRunById')
 def update_run(id, runId):
     run = db.session.query(Run).filter(Run.runner_id == id, Run.id == runId).first()
+
+    if run is None:
+        return jsonify({"error": "run not found"}), 404
+
     json_to_run(run, request.get_json(), id)
     db.session.commit()
 
