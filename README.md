@@ -21,3 +21,11 @@ To run the app launch:
 ```
 python beepbeep/dataservice/run.py
 ```
+
+## Test
+
+To run coverage launch:
+```
+pytest --cov-config .coveragerc --cov beepbeep/dataservice --cov-report html:cov_html
+```
+A new html report will be generated inside the *./cov_html* folder
