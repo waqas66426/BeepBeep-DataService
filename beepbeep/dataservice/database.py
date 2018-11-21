@@ -69,6 +69,44 @@ class Run(db.Model):
         return res
 
 
+class Challenge(db.Model):
+    __tablename__ = 'challenge'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    runner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    runner = relationship('User', foreign_keys='Challenge.runner_id')
+    # runner = relationship('User',
+    #                       foreign_keys='Challenge.runner_id',
+    #                       backref=backref('Challenge', cascade="all,delete"))
+    run_id = db.Column(db.Integer, db.ForeignKey('run.id'))
+    run = relationship('Run', foreign_keys='Challenge.run_id')
+    # run = relationship('Run', foreign_keys='Challenge.run_id', backref=backref('Challenge', cascade="all,delete"))
+    latest_run_id = db.Column(db.Integer)
+
+    def to_json(self):
+        res = {}
+        for attr in ('id', 'runner_id', 'run_id', 'latest_run_id'):
+            value = getattr(self, attr)
+            res[attr] = value
+        return res
+
+
+class Objective(db.Model):
+    __tablename__ = 'user_objectives'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    distance = db.Column(db.Float)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = relationship('User', foreign_keys='Objective.user_id')
+    # user = relationship('User', foreign_keys='Objective.user_id',
+    #                               backref=backref('Objective', cascade="all,delete"))
+
+    def to_json(self):
+        res = {}
+        for attr in ('id', 'distance', 'user_id'):
+            value = getattr(self, attr)
+            res[attr] = value
+        return res
+
+
 def init_database():
     exists = db.session.query(User).filter(User.email == 'example@example.com')
     if exists.all() != []:

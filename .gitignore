@@ -11,3 +11,4 @@ lib
 docs/build
 key.sh
 src
+/cov_html
