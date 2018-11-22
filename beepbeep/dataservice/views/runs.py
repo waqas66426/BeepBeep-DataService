@@ -67,6 +67,9 @@ def get_run(id, runId):
 def update_run(id, runId):
     run = db.session.query(Run).filter(Run.runner_id == id, Run.id == runId).first()
 
+    if request.get_json() is None:
+        return "Invalid run body", 400
+
     if run is None:
         return jsonify({"error": "run not found"}), 404
 

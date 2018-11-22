@@ -1,5 +1,3 @@
-from beepbeep.dataservice.database import Run
-
 
 RUNSPATH = "/users/1"
 

@@ -53,6 +53,9 @@ def get_challenge(id, challengeId):
 def update_challenge(id, challengeId):
     challenge = db.session.query(Challenge).filter(Challenge.runner_id == id, Challenge.id == challengeId).first()
 
+    if request.get_json() is None:
+        return "Invalid challenge body", 400
+
     if challenge is None:
         return jsonify({"error": "challenge not found"}), 404
 
