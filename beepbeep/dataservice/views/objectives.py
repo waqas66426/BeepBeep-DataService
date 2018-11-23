@@ -50,6 +50,9 @@ def get_objective(id, objectiveId):
 def update_objective(id, objectiveId):
     objective = db.session.query(Objective).filter(Objective.user_id == id, Objective.id == objectiveId).first()
 
+    if request.get_json() is None:
+        return "Invalid objective body", 400
+
     if objective is None:
         return jsonify({"error": "objective not found"}), 404
 
