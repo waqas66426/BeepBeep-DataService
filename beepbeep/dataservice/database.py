@@ -15,7 +15,7 @@ class User(db.Model):
     email = db.Column(db.Unicode(128), nullable=False)
     firstname = db.Column(db.Unicode(128))
     lastname = db.Column(db.Unicode(128))
-    #password = db.Column(db.Unicode(128))
+    password = db.Column(db.Unicode(128))
     strava_token = db.Column(db.String(128))
     age = db.Column(db.Integer)
     weight = db.Column(db.Numeric(4, 1))
